@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cek Khodam</title>
+    <style>
+        body {
+            background-color: #330000;
+            color: #ff4444;
+            font-family: 'Courier New', Courier, monospace;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            min-height: 100vh;
+            margin: 0;
+            box-sizing: border-box;
+            text-align: center;
+        }
+        h1, h2, p {
+            margin-bottom: 20px;
+        }
+        input {
+            padding: 10px;
+            font-size: 16px;
+            border: 2px solid #ff4444;
+            background-color: #1a0000;
+            color: #ff4444;
+            width: 80%;
+            max-width: 300px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            background-color: #660000;
+            color: #ff4444;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #ff4444;
+            color: #660000;
+        }
+        .result {
+            margin-top: 30px;
+            border: 2px solid #ff4444;
+            padding: 20px;
+            background-color: #1a0000;
+            text-align: left;
+            max-width: 80%;
+            margin: 0 auto;
+        }
+        .loader {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #ff4444;
+            border-radius: 50%;
+            border-top: 4px solid transparent;
+            animation: spin 1s linear infinite;
+            display: none;
+            margin: 20px auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .limit {
+            margin-top: 20px;
+        }
+        .footer {
+            position: fixed;
+            bottom: 10px;
+            width: 100%;
+            text-align: center;
+            color: #ff4444;
+        }
+        .mystic-alert, .limit-alert, .redeem-alert {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #1a0000;
+            border: 2px solid #ff4444;
+            padding: 20px;
+            color: #ff4444;
+            display: none;
+            z-index: 1000;
+            text-align: center;
+        }
+        .mystic-alert h2, .limit-alert h2, .redeem-alert h2 {
+            margin: 0 0 10px;
+        }
+        .mystic-alert p, .limit-alert p, .redeem-alert p {
+            margin: 0;
+        }
+        .mystic-alert button, .limit-alert button, .redeem-alert button {
+            margin-top: 20px;
+            background-color: #660000;
+            color: #ff4444;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+        .user-ip {
+            margin-top: 10px;
+            position: relative;
+        }
+        .user-ip .toggle-ip {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #ff4444;
+        }
+        .user-ip .ip-address {
+            display: none;
+        }
+        .user-ip .ip-address.show {
+            display: inline;
+        }
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 200px;
+            height: 100%;
+            background-color: #1a0000;
+            border-right: 2px solid #ff4444;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 20px;
+            z-index: 1000;
+        }
+        .sidebar button {
+            margin: 10px 0;
+        }
+        .redeem-alert input {
+            margin: 10px 0;
+            width: calc(100% - 40px);
+        }
+        @media only screen and (max-width: 600px) {
+            input {
+                width: 100%;
+                max-width: none;
+            }
+            .result {
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button onclick="toggleSidebar()" style="position: fixed; top: 10px; left: 10px; font-size: 24px;">≡</button>
+    <div class="sidebar" id="sidebar">
+        <button onclick="showRedeemAlert()">Redeem Code</button>
+        <button onclick="contactDev()">Contact</button>
+        <button onclick="apiDoc()">Instagram</button>
+        <button onclick="toggleSidebar()">Back</button>
+    </div>
+    <h1>Cek Khodam</h1>
+    <p>Masukkan namamu untuk mengetahui khodammu:</p>
+    <input type="text" id="nameInput" placeholder="Namamu...">
+    <button onclick="cekKhodam()">Cek Khodam</button>
+    <div class="loader" id="loader"></div>
+    <div id="result" class="result" style="display: none;">
+        <h2 id="khodamName"></h2>
+        <p id="khodamMeaning"></p>
+    </div>
+    <div class="limit" id="limit" style="display: none;">
+        Sisa limit penggunaan: <span id="remainingUses"></span>
+    </div>
+    <div class="user-ip" id="userIP" style="display: none;">
+        Your IP: <span class="ip-address" id="ipAddress"></span>
+        <span class="toggle-ip" onclick="toggleIP()">👁️</span>
+    </div>
+    <div class="footer">
+        &copy; 2024 © BOYPEDIA
+    </div>
+    <div class="mystic-alert" id="mysticAlert">
+        <h2>Perhatian</h2>
+        <p>Masukkan Namamu!</p>
+        <button onclick="closeAlert()">Tutup</button>
+    </div>
+    <div class="limit-alert" id="limitAlert">
+        <h2>Perhatian</h2>
+        <p>Anda telah mencapai batas penggunaan.</p>
+        <button onclick="closeLimitAlert()">Tutup</button>
+    </div>
+    <div class="redeem-alert" id="redeemAlert">
+        <h2>Redeem Code</h2>
+        <input type="text" id="redeemCodeInput" placeholder="Masukkan kode redeem">
+        <button onclick="redeemCode()">Klaim</button>
+        <button onclick="closeRedeemAlert()">Tutup</button>
+    </div>
+    <script>
+        const khodams = [
+            { name: "Harimau Putih", meaning: "Kamu kuat dan berani seperti harimau, karena pendahulumu mewariskan kekuatan besar padamu." },
+            { name: "Monyet Kekar", meaning: "Kamu lincah dan cerdas, mampu menghadapi berbagai tantangan dengan ketangkasan." },
+            { name: "Naga Merah", meaning: "Kamu memiliki kekuatan luar biasa dan kebijaksanaan, seperti naga yang legendaris." },
+            { name: "Burung Garuda", meaning: "Kamu bebas dan perkasa, melambangkan kebebasan dan kemuliaan." },
+            { name: "Serigala Hitam", meaning: "Kamu setia dan memiliki insting tajam, mampu melindungi diri dan orang lain." },
+            { name: "Panda Ompong", meaning: "Kamu menggemaskan dan selalu berhasil membuat orang tersenyum dengan keanehanmu." },
+            { name: "Bebek Karet", meaning: "Kamu selalu tenang dan ceria, mampu menghadapi gelombang masalah dengan senyum." },
+            { name: "Ninja Turtle", meaning: "Kamu lincah dan tangguh, siap melindungi yang lemah dengan kekuatan tempurmu." },
+            { name: "Kucing Kulkas", meaning: "Kamu misterius dan selalu ada di tempat-tempat yang tak terduga." },
+            { name: "Sabun Wangi", meaning: "Kamu selalu membawa keharuman dan kesegaran di mana pun kamu berada." },
+            { name: "Semut Kecil", meaning: "Kamu pekerja keras dan selalu bisa diandalkan dalam situasi apa pun." },
+            { name: "Moge Suzuki", meaning: "Kamu cepat dan penuh gaya, selalu menjadi pusat perhatian di jalanan." },
+            { name: "Cupcake Pelangi", meaning: "Kamu manis dan penuh warna, selalu membawa kebahagiaan dan keceriaan." },
+            { name: "Robot Mini", meaning: "Kamu canggih dan selalu siap membantu dengan kecerdasan teknologi tinggi." },
+            { name: "Ikan Terbang", meaning: "Kamu unik dan penuh kejutan, selalu melampaui batasan yang ada." },
+            { name: "Ayam Goreng", meaning: "Kamu selalu disukai dan dinanti oleh banyak orang, penuh kelezatan dalam setiap langkahmu." },
+            { name: "Kecoa Terbang", meaning: "Kamu selalu mengagetkan dan bikin heboh seisi ruangan." },
+            { name: "Kambing Ngebor", meaning: "Kamu unik dan selalu bikin orang tertawa dengan tingkah lakumu yang aneh." },
+            { name: "Kerupuk Renyah", meaning: "Kamu selalu bikin suasana jadi lebih seru dan nikmat." },
+            { name: "Celengan Babi", meaning: "Kamu selalu menyimpan kejutan di dalam dirimu." },
+            { name: "Lemari Tua", meaning: "Kamu penuh dengan cerita dan kenangan masa lalu." },
+            { name: "Kopi Susu", meaning: "Kamu manis dan selalu bikin semangat orang-orang di sekitarmu." },
+            { name: "Sapu Lidi", meaning: "Kamu kuat dan selalu bisa diandalkan untuk membersihkan masalah." },
+            { name: "Kuda Lumping", meaning: "Kamu penuh semangat dan selalu tampil beda di setiap kesempatan." },
+            { name: "Sepatu Roda", meaning: "Kamu cepat dan lincah, selalu bergerak ke depan dengan penuh gaya." },
+            { name: "Bola Pingpong", meaning: "Kamu ringan dan selalu bikin permainan jadi lebih seru." },
+            { name: "Lumba-lumba", meaning: "Kamu pintar dan selalu membawa keceriaan di lautan kehidupan." },
+            { name: "Kucing Gemuk", meaning: "Kamu santai dan selalu bikin orang tersenyum dengan kelucuanmu." },
+            { name: "Iguana Pink", meaning: "Kamu eksotis dan selalu menarik perhatian dengan warnamu yang unik." },
+            { name: "Bantal Guling", meaning: "Kamu nyaman dan selalu dibutuhkan saat waktu istirahat." },
+            { name: "Komputer Jadul", meaning: "Kamu klasik dan penuh dengan pengetahuan di dalam dirimu." },
+            { name: "Kasur Empuk", meaning: "Kamu selalu memberikan kenyamanan dan ketenangan." },
+            { name: "Bola Bekel", meaning: "Kamu kecil tapi selalu memberikan kebahagiaan di setiap permainan." },
+            { name: "Es Krim Pelangi", meaning: "Kamu manis dan penuh warna, selalu menyegarkan hari-hari." },
+            { name: "Biskuit Coklat", meaning: "Kamu selalu bikin ketagihan dengan kelezatanmu yang tak tertahankan." },
+            { name: "Nasi Padang", meaning: "Kamu selalu bikin kenyang dan puas dengan kelezatanmu yang khas." },
+            { name: "Roti Bakar", meaning: "Kamu sederhana tapi selalu bikin orang merasa nyaman." },
+            { name: "Sepeda Ontel", meaning: "Kamu klasik dan selalu memberikan kesenangan di setiap perjalanan." },
+            { name: "Sate Kambing", meaning: "Kamu gurih dan selalu jadi favorit di setiap kesempatan." },
+            { name: "Kue Cubit", meaning: "Kamu kecil tapi selalu bikin orang bahagia dengan rasamu yang enak." },
+            { name: "Bakso Urat", meaning: "Kamu kuat dan selalu memberikan kenikmatan di setiap gigitan." },
+            { name: "Es Kelapa", meaning: "Kamu segar dan selalu bikin adem di saat-saat panas." },
+            { name: "Siomay Bandung", meaning: "Kamu selalu bikin ketagihan dengan rasa khasmu yang lezat." },
+            { name: "Bajigur Hangat", meaning: "Kamu selalu bikin suasana jadi hangat dan nyaman." },
+            { name: "Martabak Manis", meaning: "Kamu penuh kejutan dengan isi yang manis dan nikmat." },
+            { name: "Permen Karet", meaning: "Kamu selalu bikin suasana jadi lebih ceria dengan kenikmatanmu yang kenyal." },
+            { name: "Pisang Goreng", meaning: "Kamu selalu bikin suasana jadi lebih hangat dan nyaman." },
+            { name: "Telur Dadar", meaning: "Kamu sederhana tapi selalu bikin orang puas dengan kelezatanmu." },
+            { name: "Es Buah", meaning: "Kamu segar dan penuh warna, selalu bikin hari jadi lebih ceria." },
+            { name: "Mie Goreng", meaning: "Kamu selalu bikin kenyang dan puas dengan rasamu yang lezat." },
+            { name: "Puding Coklat", meaning: "Kamu manis dan selalu bikin suasana jadi lebih nyaman." },
+            { name: "Gulai Kambing", meaning: "Kamu kaya rasa dan selalu bikin orang ketagihan dengan kelezatanmu." },
+            { name: "Kue Nastar", meaning: "Kamu selalu hadir di saat-saat spesial dengan rasa yang manis dan enak." },
+            { name: "Krupuk Ikan", meaning: "Kamu renyah dan selalu bikin suasana jadi lebih seru." },
+            { name: "Es Teler", meaning: "Kamu segar dan penuh kejutan dengan campuran rasa yang enak." },
+            { name: "Rujak Buah", meaning: "Kamu segar dan selalu bikin suasana jadi lebih hidup dengan rasamu yang pedas dan manis." },
+            { name: "Soto Ayam", meaning: "Kamu selalu bikin hangat dan puas dengan kuahmu yang lezat." },
+            { name: "Tahu Bulat", meaning: "Kamu selalu hadir di momen-momen yang pas dengan rasa yang enak." },
+            { name: "Keripik Singkong", meaning: "Kamu renyah dan selalu bikin suasana jadi lebih seru." },
+            { name: "Kacang Goreng", meaning: "Kamu selalu jadi camilan favorit di setiap kesempatan." },
+            { name: "Tongseng Sapi", meaning: "Kamu kaya rasa dan selalu bikin orang ketagihan dengan kelezatanmu." },
+            { name: "Sate Padang", meaning: "Kamu selalu bikin kenyang dan puas dengan rasa khasmu yang lezat." },
+            { name: "Nasi Uduk", meaning: "Kamu selalu bikin kenyang dan puas dengan rasa gurihmu yang enak." },
+            { name: "Cendol Dawet", meaning: "Kamu segar dan selalu bikin suasana jadi lebih adem di saat-saat panas." },
+            { name: "Onde-onde", meaning: "Kamu selalu hadir di saat-saat spesial dengan rasa yang manis dan enak." },
+            { name: "Kolak Pisang", meaning: "Kamu manis dan selalu bikin suasana jadi lebih hangat dan nyaman." },
+            { name: "Macan Kumbang", meaning: "Kamu misterius dan kuat, seperti macan yang jarang terlihat tapi selalu waspada." },
+            { name: "Kuda Emas", meaning: "Kamu berharga dan kuat, siap untuk berlari menuju kesuksesan." },
+            { name: "Elang Biru", meaning: "Kamu memiliki visi yang tajam dan dapat melihat peluang dari jauh." },
+            { name: "Harimau Loreng", meaning: "Kamu tangguh dan memiliki kekuatan untuk melindungi dan menyerang." },
+            { name: "Gajah Putih", meaning: "Kamu bijaksana dan memiliki kekuatan besar, lambang dari keberanian dan keteguhan hati." },
+            { name: "Banteng Sakti", meaning: "Kamu kuat dan penuh semangat, tidak takut menghadapi rintangan." },
+            { name: "Ular Raksasa", meaning: "Kamu memiliki kebijaksanaan dan kekuatan tersembunyi, siap menyerang jika diperlukan." },
+            { name: "Ikan Dewa", meaning: "Kamu tenang dan penuh kedamaian, membawa rezeki dan keberuntungan." },
+            { name: "Kucing Hitam", meaning: "Kamu misterius dan penuh dengan rahasia, membawa keberuntungan bagi yang memahami." },
+            { name: "Rusa Emas", meaning: "Kamu anggun dan berharga, selalu dihargai oleh orang-orang di sekitarmu." },
+            { name: "Singa Bermahkota", meaning: "Kamu lahir sebagai pemimpin, memiliki kekuatan dan kebijaksanaan seorang raja." },
+            { name: "Kijang Perak", meaning: "Kamu cepat dan cekatan, selalu waspada dan siap untuk melompat lebih jauh." },
+    { name: "Kipas Angin Kelereng", meaning: "Selalu memberikan angin segar dengan kocaknya" },
+    { name: "Penghapus Ajaib", meaning: "Mampu menghapus kesalahan dengan cara yang lucu" },
+    { name: "Kertas Guling Goyang", meaning: "Tak pernah diam dan selalu menghibur" },
+    { name: "Pulpen Melambai", meaning: "Selalu memberi tanda dengan cara yang unik" },
+    { name: "Tali Tambang Tertawa", meaning: "Membuat pekerjaan menjadi lebih menyenangkan" },
+    { name: "Botol Minyak Mengejek", meaning: "Seringkali memberi komentar lucu" },
+    { name: "Topi Terbang", meaning: "Membuat kepala menjadi lebih ringan dengan keunikannya" },
+    { name: "Payung Terbalik", meaning: "Selalu membalikkan situasi dengan cara yang tak terduga" },
+    { name: "Piring Berjalan", meaning: "Tak pernah tinggal diam di tempatnya" },
+    { name: "Ember Tertawa", meaning: "Menghadirkan keceriaan di setiap kegiatan" },
+    { name: "Lampu Tidur Tertidur", meaning: "Terlihat malas-malasan tapi selalu memberikan cahaya yang hangat" },
+    { name: "Gelas Bergoyang", meaning: "Selalu memberikan sensasi yang berbeda dalam menikmati minuman" },
+    { name: "Kunci Kamar Mandi Keriting", meaning: "Selalu membuat masalah kecil menjadi lucu" },
+    { name: "Pisau Potong Hati", meaning: "Mampu memotong rasa sakit dengan kelebihannya" },
+    { name: "Tisu Terbang", meaning: "Selalu siap membantu dengan cepat dan lincah" },
+    { name: "Kardus Kocak", meaning: "Tak pernah membosankan, selalu menyimpan kejutan di dalamnya" },
+    { name: "Kain Lap Terbang", meaning: "Berguna untuk membersihkan dengan cara yang seru" },
+    { name: "Sendok Garpu Goyang", meaning: "Menjadi pasangan yang serasi dalam setiap makanan" },
+    { name: "Tempat Pensil Teriak", meaning: "Tak pernah diam dan selalu meminta perhatian" },
+    { name: "Buku Lucu", meaning: "Mampu membuatmu tertawa di setiap halaman" },
+    { name: "Cermin Menggigil", meaning: "Selalu memberikan pantulan yang lucu" },
+    { name: "Kamera Gelantungan", meaning: "Selalu mengabadikan momen-momen lucu" },
+    { name: "Cangkir Cemberut", meaning: "Meski terlihat cemberut, tapi selalu menyajikan minuman dengan baik" },
+    { name: "Kursi Muter", meaning: "Memberikan sensasi berputar di setiap duduknya" },
+    { name: "Lemari Tertidur", meaning: "Selalu memberikan kenyamanan yang tak terduga" },
+    { name: "Tas Terbang", meaning: "Selalu membawa barang-barang dengan gaya yang unik" },
+    { name: "Sepatu Terbang", meaning: "Membuat langkahmu lebih ringan dengan kelebihannya" },
+    { name: "Kunci Jalan Bergosip", meaning: "Tak pernah diam tentang hal-hal di sekitarnya" },
+    { name: "Sisir Sibuk", meaning: "Selalu memberikan gaya yang berbeda pada setiap rambut" },
+    { name: "Gelas Tertawa", meaning: "Bergoyang-goyang saat diisi dengan minuman" },
+    { name: "Pisau Potong Goyang", meaning: "Selalu memberikan irama yang unik saat digunakan" },
+    { name: "Meja Ngobrol", meaning: "Tak pernah sepi dari percakapan" },
+    { name: "Piring Berguling", meaning: "Suka berputar-putar saat disentuh" },
+    { name: "Kompor Berpikir", meaning: "Selalu memberikan solusi yang cerdas untuk setiap masalah" },
+    { name: "Kulkas Goyang", meaning: "Bergetar saat diisi dengan makanan" },
+    { name: "Cangkir Berlari", meaning: "Tak pernah bisa diam di tempatnya" },
+    { name: "Lampu Malam Malas", meaning: "Terlihat malas tapi selalu memberikan cahaya yang lembut" },
+    { name: "Botol Kecap Keriting", meaning: "Selalu memberikan sentuhan yang berbeda pada masakan" },
+    { name: "Sendok Garpu Bergoyang", meaning: "Selalu menari-nari saat digunakan" },
+    { name: "Topi Tertawa", meaning: "Terlihat ceria di atas kepala siapa pun" },
+    { name: "Korek Api Malas", meaning: "Terlihat malas tapi selalu memberikan api yang menyala" },
+    { name: "Panci Pintar", meaning: "Selalu memberikan masakan yang sempurna" },
+    { name: "Kertas Berlari", meaning: "Tak pernah bisa diam di meja" },
+    { name: "Pensil Penghilang", meaning: "Selalu menghilang saat dibutuhkan" },
+    { name: "Penghapus Pelawak", meaning: "Selalu membuat kesalahan menjadi lucu" },
+    { name: "Buku Bergoyang", meaning: "Selalu memberikan sensasi yang berbeda saat dibaca" },
+    { name: "Ponsel Pintar", meaning: "Selalu memberikan jawaban yang tepat untuk setiap pertanyaan" },
+    { name: "Gunting Goyang", meaning: "Selalu menari-nari saat digunakan" },
+    { name: "Rak Buku Pintar", meaning: "Selalu memberikan buku yang sesuai dengan minatmu" },
+    { name: "Kipas Angin Tertawa", meaning: "Terlihat bahagia saat berputar-putar" },
+    { name: "Sabun Mandi Malas", meaning: "Terlihat malas tapi selalu memberikan kebersihan yang menyegarkan" },
+    { name: "Pulpen Pintar", meaning: "Selalu memberikan ide yang brilian" },
+    { name: "Gelas Pintar", meaning: "Selalu memberikan minuman yang sesuai dengan keinginanmu" },
+    { name: "Botol Air Mengejek", meaning: "Selalu memberikan komentar yang lucu saat diminum" },
+    { name: "Bantal Bergoyang", meaning: "Tak pernah bisa diam saat di atas kasur" },
+    { name: "Kursi Bergoyang", meaning: "Selalu memberikan sensasi yang menyenangkan saat digunakan" },
+    { name: "Rak Buku Bergoyang", meaning: "Selalu memberikan sensasi yang unik saat buku diletakkan di atasnya" },
+    { name: "Tas Pintar", meaning: "Selalu memberikan barang yang diperlukan saat dibutuhkan" },
+    { name: "Piring Berlari", meaning: "Tak pernah bisa diam di tempatnya" },
+    { name: "Panci Penyihir", meaning: "Mampu membuat masakan yang ajaib" },
+    { name: "Sendok Garpu Terbalik", meaning: "Tak pernah bisa diletakkan dengan benar" },
+    { name: "Kotak Pensil Berguling", meaning: "Selalu menggelinding saat diletakkan di meja" },
+    { name: "Kunci Kamar Mandi Tertawa", meaning: "Tak pernah bisa diam dan selalu tertawa-tawa" },
+    { name: "Kardus Malas", meaning: "Selalu terlihat malas tapi selalu memberikan perlindungan yang baik" },
+    { name: "Lampu Tertidur", meaning: "Terlihat ngantuk tapi selalu memberikan cahaya yang hangat" },
+            { name: "Anjing Pelacak", meaning: "Kamu setia dan penuh dedikasi, selalu menemukan jalan menuju tujuanmu." }
+        ];
+
+        const usageLimit = 10;
+        const unlimitedIPs = ["114.125.4.97", "", "", ""]; // Tambahkan hingga tiga alamat IP lagi di sini
+        const redeemCodes = ["anjaymabar", "boypedia", "2024"];
+        let userIP = '';
+        let usageCount = parseInt(localStorage.getItem('usageCount')) || 0;
+        let lastUsageTime = parseInt(localStorage.getItem('lastUsageTime')) || 0;
+        let redeemed = JSON.parse(localStorage.getItem('redeemed')) || {};
+
+        async function fetchUserIP() {
+            try {
+                const response = await fetch('https://api.ipify.org?format=json');
+                const data = await response.json();
+                return data.ip;
+            } catch (error) {
+                console.error('Error fetching IP:', error);
+                return '';
+            }
+        }
+
+        function resetUsageLimit() {
+            const currentTime = new Date().getTime();
+            const timeDiff = currentTime - lastUsageTime;
+            const oneDay = 24 * 60 * 60 * 1000; // 24 jam dalam milidetik
+/*
+SCRIPT BY © VYNAA VALERIE 
+•• recode kasih credits 
+•• contacts: (t.me/VLShop2)
+•• instagram: @vynaa_valerie 
+•• (github.com/VynaaValerie) 
+*/
+            if (timeDiff >= oneDay) {
+                usageCount = 0;
+                localStorage.setItem('usageCount', usageCount);
+                lastUsageTime = currentTime;
+                localStorage.setItem('lastUsageTime', lastUsageTime);
+            }
+        }
+
+        function pickRandom(list) {
+            return list[Math.floor(Math.random() * list.length)];
+        }
+/*
+SCRIPT BY © VYNAA VALERIE 
+•• recode kasih credits 
+•• contacts: (t.me/VLShop2)
+•• instagram: @vynaa_valerie 
+•• (github.com/VynaaValerie) 
+*/
+        function showAlert() {
+            document.getElementById('mysticAlert').style.display = 'block';
+        }
+
+        function closeAlert() {
+            document.getElementById('mysticAlert').style.display = 'none';
+        }
+
+        function showLimitAlert() {
+            document.getElementById('limitAlert').style.display = 'block';
+        }
+
+        function closeLimitAlert() {
+            document.getElementById('limitAlert').style.display = 'none';
+        }
+
+        function showRedeemAlert() {
+            document.getElementById('redeemAlert').style.display = 'block';
+        }
+
+        function closeRedeemAlert() {
+            document.getElementById('redeemAlert').style.display = 'none';
+        }
+
+        async function cekKhodam() {
+            const nameInput = document.getElementById('nameInput').value;
+            if (!nameInput) {
+                showAlert();
+                return;
+            }
+
+            if (!userIP) {
+                userIP = await fetchUserIP();
+            }
+/*
+SCRIPT BY © VYNAA VALERIE 
+•• recode kasih credits 
+•• contacts: (t.me/VLShop2)
+•• instagram: @vynaa_valerie 
+•• (github.com/VynaaValerie) 
+*/
+            resetUsageLimit();
+
+            if (unlimitedIPs.filter(ip => ip).includes(userIP) || usageCount < usageLimit) {
+                document.getElementById('loader').style.display = 'block';
+                setTimeout(() => {
+                    const khodam = pickRandom(khodams);
+                    document.getElementById('khodamName').innerText = `Khodam: ${khodam.name}`;
+                    document.getElementById('khodamMeaning').innerText = khodam.meaning;
+                    document.getElementById('result').style.display = 'block';
+                    document.getElementById('loader').style.display = 'none';
+                    if (!unlimitedIPs.filter(ip => ip).includes(userIP)) {
+                        usageCount++;
+                        localStorage.setItem('usageCount', usageCount);
+                        document.getElementById('remainingUses').innerText = usageLimit - usageCount;
+                    } else {
+                        document.getElementById('remainingUses').innerText = "Unlimited";
+                    }
+                    document.getElementById('limit').style.display = 'block';
+                    document.getElementById('userIP').style.display = 'block';
+                    document.getElementById('ipAddress').innerText = userIP;
+                }, 2000);
+            } else {
+                showLimitAlert();
+            }
+        }
+
+        function toggleIP() {
+            const ipAddress = document.getElementById('ipAddress');
+            ipAddress.classList.toggle('show');
+        }
+/*
+SCRIPT BY © VYNAA VALERIE 
+•• recode kasih credits 
+•• contacts: (t.me/VLShop2)
+•• instagram: @vynaa_valerie 
+•• (github.com/VynaaValerie) 
+*/
+        function redeemCode() {
+    const redeemCodeInput = document.getElementById('redeemCodeInput').value;
+    if (redeemCodes.includes(redeemCodeInput) && !redeemed[userIP]) {
+        if (usageCount < usageLimit) {
+            const remaining = usageLimit - usageCount;
+            if (remaining >= 100) {
+                usageCount += 100;
+            } else {
+                usageCount = usageLimit;
+            }
+            localStorage.setItem('usageCount', usageCount);
+            redeemed[userIP] = true;
+            localStorage.setItem('redeemed', JSON.stringify(redeemed));
+            document.getElementById('remainingUses').innerText = usageLimit - usageCount;
+            closeRedeemAlert();
+            alert('Redeem code berhasil! Anda mendapatkan 100 limit tambahan.');
+        } else {
+            alert('Maaf, Anda telah mencapai batas penggunaan.');
+        }
+    } else {
+        alert('Kode redeem tidak valid atau sudah digunakan.');
+    }
+}
+/*
+SCRIPT BY © VYNAA VALERIE 
+•• recode kasih credits 
+•• contacts: (t.me/VLShop2)
+•• instagram: @vynaa_valerie 
+•• (github.com/VynaaValerie) 
+*/
+        function contactDev() {
+            alert('Silahkan hubungi admin untuk meminta kode redem di whatsapp: 081264116045');
+            window.location.href = "https://wa.me/6281264116045?text=Haii+Admin+bagi+kode+redemnya+dong+please"; // Ganti 'username' dengan username Instagram yang benar
+        }
+
+        function apiDoc() {
+            alert('Follow instagram admin!!!');
+            // Mengarahkan ke halaman Instagram
+            window.location.href = "https://www.instagram.com/sen27.nf"; // Ganti 'username' dengan username Instagram yang benar
+        }
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            if (sidebar.style.display === 'none' || sidebar.style.display === '') {
+                sidebar.style.display = 'flex';
+            } else {
+                sidebar.style.display = 'none';
+            }
+        }
+
+        window.onload = async () => {
+            userIP = await fetchUserIP();
+            resetUsageLimit(); // Panggil fungsi reset saat halaman dimuat
+            if (unlimitedIPs.filter(ip => ip).includes(userIP)) {
+                document.getElementById('remainingUses').innerText = "Unlimited";
+            } else {
+                document.getElementById('remainingUses').innerText = usageLimit - usageCount;
+            }
+            document.getElementById('limit').style.display = 'block';
+            document.getElementById('userIP').style.display = 'block';
+            document.getElementById('ipAddress').innerText = userIP;
+        };
+    </script>
+</body>
+</html>
