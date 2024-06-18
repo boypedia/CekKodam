@@ -3,6 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="og:title" content="CEK KHODAM">
+    <meta property="og:description" content="Cek khodam online kamu disini👿"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="og:image" content=" https://telegra.ph/file/5208622b28fa01a4f94a6.jpg "> 
+    <link rel="SHORTCUT ICON" href=" https://telegra.ph/file/5208622b28fa01a4f94a6.jpg ">
     <title>Cek Khodam</title>
     <style>
         body {
@@ -179,7 +184,7 @@
         <span class="toggle-ip" onclick="toggleIP()">👁️</span>
     </div>
     <div class="footer">
-        &copy; 2024 © BOYPEDIA
+        &copy; 2024 BOYPEDIA
     </div>
     <div class="mystic-alert" id="mysticAlert">
         <h2>Perhatian</h2>
@@ -192,11 +197,11 @@
         <button onclick="closeLimitAlert()">Tutup</button>
     </div>
     <div class="redeem-alert" id="redeemAlert">
-        <h2>Redeem Code</h2>
-        <input type="text" id="redeemCodeInput" placeholder="Masukkan kode redeem">
-        <button onclick="redeemCode()">Klaim</button>
-        <button onclick="closeRedeemAlert()">Tutup</button>
-    </div>
+    <h2>Redeem Code</h2>
+    <input type="text" id="redeemCodeInput" placeholder="Masukkan kode redeem">
+    <button onclick="redeemCode()" id="redeemButton">Klaim</button>
+    <button onclick="closeRedeemAlert()">Tutup</button>
+</div>
     <script>
         const khodams = [
             { name: "Harimau Putih", meaning: "Kamu kuat dan berani seperti harimau, karena pendahulumu mewariskan kekuatan besar padamu." },
@@ -268,6 +273,184 @@
             { name: "Macan Kumbang", meaning: "Kamu misterius dan kuat, seperti macan yang jarang terlihat tapi selalu waspada." },
             { name: "Kuda Emas", meaning: "Kamu berharga dan kuat, siap untuk berlari menuju kesuksesan." },
             { name: "Elang Biru", meaning: "Kamu memiliki visi yang tajam dan dapat melihat peluang dari jauh." },
+    { name: "Indomie Goreng", meaning: "Selalu bikin kenyang dan bahagia" },
+    { name: "Es Krim Meleleh", meaning: "Selalu mencairkan suasana dengan rasa manisnya" },
+    { name: "Bakso Ulet", meaning: "Selalu gigih dan bulat dalam menghadapi masalah" },
+    { name: "Lem Super", meaning: "Selalu lengket dalam situasi yang rumit" },
+    { name: "Kecap Manis", meaning: "Selalu memberikan sentuhan manis dalam hidup" },
+    { name: "Sabun Mandi", meaning: "Selalu bersih dan wangi" },
+    { name: "Kopi Tumpah", meaning: "Selalu bersemangat, tapi kadang berantakan" },
+    { name: "Sepeda Ontel", meaning: "Selalu klasik dan sederhana" },
+    { name: "Roti Bakar", meaning: "Selalu hangat dan enak" },
+    { name: "Kucing Kampung", meaning: "Selalu mandiri dan penuh petualangan" },
+    { name: "Jamu Pahit", meaning: "Selalu memberi kekuatan meski tak enak di awal" },
+    { name: "Teh Celup", meaning: "Selalu memberikan rasa hangat di hati" },
+    { name: "Tas Kresek", meaning: "Selalu ringan dan praktis" },
+    { name: "Es Kelapa", meaning: "Selalu segar dan menyegarkan" },
+    { name: "Motor Astrea", meaning: "Selalu setia dan bandel" },
+    { name: "Mie Instan", meaning: "Selalu cepat dan mengenyangkan" },
+    { name: "Bolu Kukus", meaning: "Selalu lembut dan manis" },
+    { name: "Tahu Bulat", meaning: "Selalu enak di segala suasana" },
+    { name: "Nasi Uduk", meaning: "Selalu cocok di segala waktu" },
+    { name: "Susu Kental Manis", meaning: "Selalu menambah kenikmatan" },
+    { name: "Kopi Hitam", meaning: "Selalu memberi semangat di pagi hari" },
+    { name: "Kacang Goreng", meaning: "Selalu asyik untuk ngemil" },
+    { name: "Ayam Goreng Tepung", meaning: "Selalu renyah dan nikmat" },
+    { name: "Sambal Terasi", meaning: "Selalu pedas dan menggigit" },
+    { name: "Ketoprak", meaning: "Selalu mengenyangkan dan lezat" },
+    { name: "Cendol Dawet", meaning: "Selalu segar di siang hari" },
+    { name: "Gado-Gado", meaning: "Selalu penuh warna dan rasa" },
+    { name: "Pisang Goreng", meaning: "Selalu manis dan gurih" },
+    { name: "Martabak Manis", meaning: "Selalu lezat dan memanjakan lidah" },
+    { name: "Bubur Ayam", meaning: "Selalu hangat dan mengenyangkan" },
+    { name: "Soto Ayam", meaning: "Selalu kaya rasa dan gurih" },
+    { name: "Nasi Padang", meaning: "Selalu penuh dengan kenikmatan" },
+    { name: "Rendang Daging", meaning: "Selalu empuk dan kaya rempah" },
+    { name: "Nasi Goreng", meaning: "Selalu praktis dan enak" },
+    { name: "Bakmi Jawa", meaning: "Selalu menggugah selera" },
+    { name: "Sate Ayam", meaning: "Selalu enak di segala acara" },
+    { name: "Gulai Kambing", meaning: "Selalu kaya rasa dan lezat" },
+    { name: "Rawon Sapi", meaning: "Selalu hitam dan nikmat" },
+    { name: "Ikan Bakar", meaning: "Selalu gurih dan enak" },
+    { name: "Pepes Tahu", meaning: "Selalu lezat dan bergizi" },
+    { name: "Tempe Mendoan", meaning: "Selalu gurih dan renyah" },
+    { name: "Keripik Singkong", meaning: "Selalu renyah dan menggoda" },
+    { name: "Jus Alpukat", meaning: "Selalu segar dan menyehatkan" },
+    { name: "Es Teler", meaning: "Selalu segar dan nikmat" },
+    { name: "Bubur Kacang Hijau", meaning: "Selalu hangat dan mengenyangkan" },
+    { name: "Bakpao", meaning: "Selalu lembut dan enak" },
+    { name: "Pempek", meaning: "Selalu gurih dan kenyal" },
+    { name: "Sosis Bakar", meaning: "Selalu enak di segala suasana" },
+    { name: "Lumpia Semarang", meaning: "Selalu gurih dan nikmat" },
+    { name: "Otak-Otak", meaning: "Selalu enak dan gurih" },
+    { name: "Pastel", meaning: "Selalu renyah dan nikmat" },
+    { name: "Cilok", meaning: "Selalu kenyal dan enak" },
+    { name: "Bakwan Jagung", meaning: "Selalu gurih dan lezat" },
+    { name: "Risol", meaning: "Selalu renyah dan enak" },
+    { name: "Combro", meaning: "Selalu gurih dan pedas" },
+    { name: "Getuk", meaning: "Selalu manis dan kenyal" },
+    { name: "Tape Singkong", meaning: "Selalu manis dan segar" },
+    { name: "Wedang Jahe", meaning: "Selalu hangat dan menenangkan" },
+    { name: "Dawet Ayu", meaning: "Selalu segar dan menggoda" },
+    { name: "Es Buah", meaning: "Selalu segar dan penuh warna" },
+    { name: "Es Doger", meaning: "Selalu manis dan menyegarkan" },
+    { name: "Tengkleng", meaning: "Selalu gurih dan enak" },
+    { name: "Gulai Nangka", meaning: "Selalu kaya rasa dan lezat" },
+    { name: "Coto Makassar", meaning: "Selalu gurih dan nikmat" },
+    { name: "Nasi Liwet", meaning: "Selalu enak dan mengenyangkan" },
+    { name: "Bubur Sumsum", meaning: "Selalu lembut dan manis" },
+    { name: "Kue Cubit", meaning: "Selalu manis dan lembut" },
+    { name: "Bolu Pandan", meaning: "Selalu harum dan enak" },
+    { name: "Onde-Onde", meaning: "Selalu kenyal dan manis" },
+    { name: "Serabi Solo", meaning: "Selalu lembut dan gurih" },
+    { name: "Lemper Ayam", meaning: "Selalu gurih dan lezat" },
+    { name: "Kue Lumpur", meaning: "Selalu lembut dan manis" },
+    { name: "Kue Lapis", meaning: "Selalu warna-warni dan manis" },
+    { name: "Kue Putu", meaning: "Selalu hangat dan manis" },
+    { name: "Es Pisang Ijo", meaning: "Selalu segar dan manis" },
+    { name: "Klepon", meaning: "Selalu manis dan kenyal" },
+    { name: "Martabak Telur", meaning: "Selalu gurih dan enak" },
+    { name: "Ayam Penyet", meaning: "Selalu pedas dan menggigit" },
+    { name: "Ikan Asin", meaning: "Selalu gurih dan asin" },
+    { name: "Sop Buntut", meaning: "Selalu kaya rasa dan nikmat" },
+    { name: "Bakso Malang", meaning: "Selalu gurih dan lezat" },
+    { name: "Pempek Palembang", meaning: "Selalu enak dan gurih" },
+    { name: "Tahu Gejrot", meaning: "Selalu pedas dan segar" },
+    { name: "Gepuk Daging", meaning: "Selalu empuk dan lezat" },
+    { name: "Ayam Betutu", meaning: "Selalu kaya bumbu dan enak" },
+    { name: "Ikan Gurame", meaning: "Selalu gurih dan nikmat" },
+    { name: "Udang Goreng", meaning: "Selalu renyah dan enak" },
+    { name: "Cumi Saus Tiram", meaning: "Selalu gurih dan lezat" },
+    { name: "Royco Ayam", meaning: "Selalu menambah rasa gurih pada setiap kesempatan" },
+    { name: "Honda Supra", meaning: "Selalu bisa diandalkan di jalanan" },
+    { name: "Kompor Meledak", meaning: "Selalu memberikan kehangatan yang luar biasa" },
+    { name: "Es Batu Menangis", meaning: "Selalu mencair di saat yang tak terduga" },
+    { name: "Teh Botol Sosro", meaning: "Selalu segar di segala suasana" },
+    { name: "Payung Bocor", meaning: "Selalu memberikan kejutan saat hujan" },
+    { name: "Kursi Tertawa", meaning: "Selalu membuatmu nyaman dengan gayanya yang lucu" },
+    { name: "Motor Vespa", meaning: "Selalu klasik dan penuh gaya" },
+    { name: "Ember Bocor", meaning: "Selalu berfungsi walau tak sempurna" },
+    { name: "Bantal Gebuk", meaning: "Selalu menemani tidurmu dengan kenyamanan" },
+    { name: "Mie Sedap", meaning: "Selalu cepat dan mengenyangkan" },
+    { name: "Komputer Ngadat", meaning: "Selalu menantang kesabaranmu" },
+    { name: "Handphone Jadul", meaning: "Selalu setia meski ketinggalan zaman" },
+    { name: "Kulkas Berisik", meaning: "Selalu bising tapi berguna" },
+    { name: "Rokok Gudang Garam", meaning: "Selalu nikmat di setiap tarikan" },
+    { name: "Radio Tua", meaning: "Selalu menghidupkan suasana" },
+    { name: "Sepatu Butut", meaning: "Selalu nyaman meski usang" },
+    { name: "Blender Bising", meaning: "Selalu ribut tapi membantu" },
+    { name: "Sapu Ijuk", meaning: "Selalu membersihkan dengan efektif" },
+    { name: "Kipas Angin", meaning: "Selalu memberikan angin segar" },
+    { name: "Rice Cooker", meaning: "Selalu memasak nasi dengan sempurna" },
+    { name: "Senter Mati", meaning: "Selalu ada saat dibutuhkan" },
+    { name: "Pisau Tumpul", meaning: "Selalu menantang dalam memotong" },
+    { name: "Honda Beat", meaning: "Selalu lincah di jalanan" },
+    { name: "Kerupuk Udang", meaning: "Selalu renyah dan nikmat" },
+    { name: "Gitar Sumbang", meaning: "Selalu memberikan nada yang tak terduga" },
+    { name: "Meja Bergoyang", meaning: "Selalu bergoyang saat digunakan" },
+    { name: "Jok Motor", meaning: "Selalu empuk dan nyaman" },
+    { name: "Tikar Lipat", meaning: "Selalu praktis di segala acara" },
+    { name: "Paku Karet", meaning: "Selalu lentur dan tak terduga" },
+    { name: "Lemari Besi", meaning: "Selalu kuat dan kokoh" },
+    { name: "Sepeda BMX", meaning: "Selalu siap untuk petualangan" },
+    { name: "Tas Belanja", meaning: "Selalu praktis dan berguna" },
+    { name: "Lilin Meleleh", meaning: "Selalu memberikan cahaya di kegelapan" },
+    { name: "Kabel Kusut", meaning: "Selalu membuat bingung" },
+    { name: "Honda CBR", meaning: "Selalu cepat dan penuh gaya" },
+    { name: "Sendok Miring", meaning: "Selalu memberi sensasi berbeda" },
+    { name: "Gelas Retak", meaning: "Selalu siap walau tak sempurna" },
+    { name: "Lampu Tidur", meaning: "Selalu memberikan cahaya lembut" },
+    { name: "Karet Gelang", meaning: "Selalu fleksibel dan berguna" },
+    { name: "Honda Vario", meaning: "Selalu tangguh di segala medan" },
+    { name: "Botol Kaca", meaning: "Selalu jernih dan berguna" },
+    { name: "Rantang Susun", meaning: "Selalu membawa bekal dengan rapi" },
+    { name: "Kunci Inggris", meaning: "Selalu siap untuk perbaikan" },
+    { name: "Honda Tiger", meaning: "Selalu gagah dan kuat" },
+    { name: "Toples Kue", meaning: "Selalu penuh kejutan manis" },
+    { name: "Wajan Teflon", meaning: "Selalu anti lengket" },
+    { name: "Honda Scoopy", meaning: "Selalu trendy dan stylish" },
+    { name: "Kasur Busa", meaning: "Selalu empuk dan nyaman" },
+    { name: "Sapu Lidi", meaning: "Selalu membersihkan dengan efektif" },
+    { name: "Panci Presto", meaning: "Selalu cepat dan praktis" },
+    { name: "Honda PCX", meaning: "Selalu mewah dan nyaman" },
+    { name: "Talenan Kayu", meaning: "Selalu setia menemani dapur" },
+    { name: "Gergaji Tumpul", meaning: "Selalu menantang dalam memotong" },
+    { name: "Honda Blade", meaning: "Selalu tajam di jalanan" },
+    { name: "Bantal Kapuk", meaning: "Selalu empuk dan lembut" },
+    { name: "Penghapus Karet", meaning: "Selalu siap menghapus kesalahan" },
+    { name: "Honda Revo", meaning: "Selalu tangguh dan hemat" },
+    { name: "Laci Meja", meaning: "Selalu menyimpan rahasia" },
+    { name: "Stoples Kaca", meaning: "Selalu jernih dan berisi" },
+    { name: "Honda Verza", meaning: "Selalu kuat dan tahan lama" },
+    { name: "Cermin Retak", meaning: "Selalu memberikan pantulan unik" },
+    { name: "Pena Bocor", meaning: "Selalu meninggalkan jejak" },
+    { name: "Honda CB150R", meaning: "Selalu cepat dan bertenaga" },
+    { name: "Baskom Plastik", meaning: "Selalu ringan dan praktis" },
+    { name: "Paku Beton", meaning: "Selalu kuat dan kokoh" },
+    { name: "Honda MegaPro", meaning: "Selalu gagah di jalanan" },
+    { name: "Gembok Rusak", meaning: "Selalu menantang keamanan" },
+    { name: "Sandal Jepit", meaning: "Selalu santai dan nyaman" },
+    { name: "Honda Win", meaning: "Selalu menang di segala medan" },
+    { name: "Lemari Plastik", meaning: "Selalu ringan dan praktis" },
+    { name: "Kulkas Mini", meaning: "Selalu dingin dan efisien" },
+    { name: "Honda CRF", meaning: "Selalu tangguh di segala medan" },
+    { name: "Cangkir Teh", meaning: "Selalu menghangatkan suasana" },
+    { name: "Kompor Gas", meaning: "Selalu cepat dan panas" },
+    { name: "Honda Monkey", meaning: "Selalu lucu dan unik" },
+    { name: "Cerek Air", meaning: "Selalu siap menyajikan kehangatan" },
+    { name: "Selimut Tebal", meaning: "Selalu hangat dan nyaman" },
+    { name: "Honda Beat Street", meaning: "Selalu lincah dan tangguh" },
+    { name: "Meja Rias", meaning: "Selalu menampilkan yang terbaik" },
+    { name: "Gelas Plastik", meaning: "Selalu ringan dan praktis" },
+    { name: "Honda X-ADV", meaning: "Selalu siap untuk petualangan" },
+    { name: "Rak Buku", meaning: "Selalu penuh pengetahuan" },
+    { name: "Sisir Patah", meaning: "Selalu berfungsi meski tak sempurna" },
+    { name: "Honda Rebel", meaning: "Selalu berjiwa pemberontak" },
+    { name: "Bantal Guling", meaning: "Selalu nyaman di pelukan" },
+    { name: "Honda CRF250", meaning: "Selalu siap menghadapi tantangan" },
+    { name: "Lemari Es", meaning: "Selalu menyimpan kesegaran" },
+    { name: "Honda Forza", meaning: "Selalu kuat dan bertenaga" },
+    { name: "Piring Retak", meaning: "Selalu menantang dengan keunikannya" },
             { name: "Harimau Loreng", meaning: "Kamu tangguh dan memiliki kekuatan untuk melindungi dan menyerang." },
             { name: "Gajah Putih", meaning: "Kamu bijaksana dan memiliki kekuatan besar, lambang dari keberanian dan keteguhan hati." },
             { name: "Banteng Sakti", meaning: "Kamu kuat dan penuh semangat, tidak takut menghadapi rintangan." },
@@ -363,25 +546,21 @@
                 return '';
             }
         }
+        
+        
+function resetUsageLimit() {
+    const currentTime = new Date().getTime();
+    const timeDiff = currentTime - lastUsageTime;
+    const fifteenMinutes = 10 * 60 * 1000; // 15 menit dalam milidetik
 
-        function resetUsageLimit() {
-            const currentTime = new Date().getTime();
-            const timeDiff = currentTime - lastUsageTime;
-            const oneDay = 24 * 60 * 60 * 1000; // 24 jam dalam milidetik
-/*
-SCRIPT BY © VYNAA VALERIE 
-•• recode kasih credits 
-•• contacts: (t.me/VLShop2)
-•• instagram: @vynaa_valerie 
-•• (github.com/VynaaValerie) 
-*/
-            if (timeDiff >= oneDay) {
-                usageCount = 0;
-                localStorage.setItem('usageCount', usageCount);
-                lastUsageTime = currentTime;
-                localStorage.setItem('lastUsageTime', lastUsageTime);
-            }
-        }
+    if (timeDiff >= fifteenMinutes) {
+        usageCount = 0;
+        localStorage.setItem('usageCount', usageCount);
+        lastUsageTime = currentTime;
+        localStorage.setItem('lastUsageTime', lastUsageTime);
+    }
+}
+
 
         function pickRandom(list) {
             return list[Math.floor(Math.random() * list.length)];
@@ -490,8 +669,10 @@ SCRIPT BY © VYNAA VALERIE
         } else {
             alert('Maaf, Anda telah mencapai batas penggunaan.');
         }
+    } else if (redeemed[userIP]) {
+        alert('Maaf, Anda telah menggunakan kode redeem sebelumnya.');
     } else {
-        alert('Kode redeem tidak valid atau sudah digunakan.');
+        alert('Kode redeem tidak valid.');
     }
 }
 /*
