@@ -205,11 +205,8 @@
     <script>
         const khodams = [
             { name: "Harimau Putih", meaning: "Kamu kuat dan berani seperti harimau, karena pendahulumu mewariskan kekuatan besar padamu." },
-            { name: "Monyet Kekar", meaning: "Kamu lincah dan cerdas, mampu menghadapi berbagai tantangan dengan ketangkasan." },
-            { name: "Naga Merah", meaning: "Kamu memiliki kekuatan luar biasa dan kebijaksanaan, seperti naga yang legendaris." },
-            { name: "Burung Garuda", meaning: "Kamu bebas dan perkasa, melambangkan kebebasan dan kemuliaan." },
-            { name: "Serigala Hitam", meaning: "Kamu setia dan memiliki insting tajam, mampu melindungi diri dan orang lain." },
-            { name: "Panda Ompong", meaning: "Kamu menggemaskan dan selalu berhasil membuat orang tersenyum dengan keanehanmu." },
+    { name: "Lampu Tertidur", meaning: "Terlihat ngantuk tapi selalu memberikan cahaya yang hangat" },
+    { name: "Panda Ompong", meaning: "Kamu menggemaskan dan selalu berhasil membuat orang tersenyum dengan keanehanmu." },
             { name: "Bebek Karet", meaning: "Kamu selalu tenang dan ceria, mampu menghadapi gelombang masalah dengan senyum." },
             { name: "Ninja Turtle", meaning: "Kamu lincah dan tangguh, siap melindungi yang lemah dengan kekuatan tempurmu." },
             { name: "Kucing Kulkas", meaning: "Kamu misterius dan selalu ada di tempat-tempat yang tak terduga." },
@@ -565,13 +562,7 @@ function resetUsageLimit() {
         function pickRandom(list) {
             return list[Math.floor(Math.random() * list.length)];
         }
-/*
-SCRIPT BY © VYNAA VALERIE 
-•• recode kasih credits 
-•• contacts: (t.me/VLShop2)
-•• instagram: @vynaa_valerie 
-•• (github.com/VynaaValerie) 
-*/
+        
         function showAlert() {
             document.getElementById('mysticAlert').style.display = 'block';
         }
@@ -606,13 +597,7 @@ SCRIPT BY © VYNAA VALERIE
             if (!userIP) {
                 userIP = await fetchUserIP();
             }
-/*
-SCRIPT BY © VYNAA VALERIE 
-•• recode kasih credits 
-•• contacts: (t.me/VLShop2)
-•• instagram: @vynaa_valerie 
-•• (github.com/VynaaValerie) 
-*/
+            
             resetUsageLimit();
 
             if (unlimitedIPs.filter(ip => ip).includes(userIP) || usageCount < usageLimit) {
@@ -643,20 +628,15 @@ SCRIPT BY © VYNAA VALERIE
             const ipAddress = document.getElementById('ipAddress');
             ipAddress.classList.toggle('show');
         }
-/*
-SCRIPT BY © VYNAA VALERIE 
-•• recode kasih credits 
-•• contacts: (t.me/VLShop2)
-•• instagram: @vynaa_valerie 
-•• (github.com/VynaaValerie) 
-*/
-        function redeemCode() {
+
+       function redeemCode() {
     const redeemCodeInput = document.getElementById('redeemCodeInput').value;
     if (redeemCodes.includes(redeemCodeInput) && !redeemed[userIP]) {
         if (usageCount < usageLimit) {
             const remaining = usageLimit - usageCount;
-            if (remaining >= 100) {
-                usageCount += 100;
+            const additionalLimit = 100; // Jumlah limit tambahan dari kode redeem
+            if (remaining >= additionalLimit) {
+                usageCount += additionalLimit;
             } else {
                 usageCount = usageLimit;
             }
@@ -675,13 +655,6 @@ SCRIPT BY © VYNAA VALERIE
         alert('Kode redeem tidak valid.');
     }
 }
-/*
-SCRIPT BY © VYNAA VALERIE 
-•• recode kasih credits 
-•• contacts: (t.me/VLShop2)
-•• instagram: @vynaa_valerie 
-•• (github.com/VynaaValerie) 
-*/
         function contactDev() {
             alert('Silahkan hubungi admin untuk meminta kode redem di whatsapp: 081264116045');
             window.location.href = "https://wa.me/6281264116045?text=Haii+Admin+bagi+kode+redemnya+dong+please"; // Ganti 'username' dengan username Instagram yang benar
